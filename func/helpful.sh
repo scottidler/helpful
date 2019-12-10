@@ -48,6 +48,17 @@ function follow() {
 	echo
 }
 
+function dbsl() {
+	DIR="${1:-`pwd`}"
+	RESULTS=`find -L $DIR -maxdepth 1 -type l`
+	if [ -n "$RESULTS" ]; then
+		echo "[d]elete [b]roken [s]ymbolic [l]inks"
+		echo "$RESULTS"
+		echo "-> /dev/null"
+		find -L $DIR -maxdepth 1 -type l -delete
+	fi
+}
+
 function mine() {
 	sudo chown -R $USER:$USER "$@"
 }
