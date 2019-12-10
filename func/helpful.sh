@@ -14,14 +14,14 @@ function vim() {
 
 	for arg in "${ARGS[@]}"; do
 		if [[ "$arg" == "-"* ]]; then
-			exec $VIM "${ARGS[@]}"
+			eval $VIM "${ARGS[@]}"
 		fi
 	done
 
 	case ${#ARGS[@]} in
-		[0-1])                  exec $VIM    "${ARGS[@]}";;
-		[$VIM_MIN-$VIM_MAX])    exec $VIM -O "${ARGS[@]}";;
-		*)                      exec $VIM -o "${ARGS[@]}";;
+		[0-1])                  eval $VIM    "${ARGS[@]}";;
+		[$VIM_MIN-$VIM_MAX])    eval $VIM -O "${ARGS[@]}";;
+		*)                      eval $VIM -o "${ARGS[@]}";;
 	esac
 }
 
@@ -73,7 +73,7 @@ function mkfiles() {
 function ls-docker-tags() {
 	if [ "$#" -ne 1 ]; then
 		echo "supply image name"
-		exit 1
+		return 1
 	fi
 	wget -q https://registry.hub.docker.com/v1/repositories/$1/tags -O -  | sed -e 's/[][]//g' -e 's/"//g' -e 's/ //g' | tr '}' '\n'  | awk -F: '{print $3}'
 
