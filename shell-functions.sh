@@ -112,19 +112,10 @@ function pmu() {
 	fi
 }
 
-function piu2() {
-	if hash pip2 2> /dev/null; then
-		echo "updating pip2 packages..."
-		PKGS="`pip2 list | tail -n +3 | cut -d' ' -f1 | xargs echo -n`"
-		sudo -H python2 -m pip install --upgrade $PKGS
-	fi
-}
-
 function piu3() {
 	if hash pip3 2> /dev/null; then
 		echo "updating pip3 packages..."
-		PKGS="`pip3 list | tail -n +3 | cut -d' ' -f1 | xargs echo -n`"
-		sudo -H python3 -m pip install --upgrade $PKGS
+        pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 sudo pip3 install --upgrade
 	fi
 }
 
