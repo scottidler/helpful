@@ -120,7 +120,6 @@ function piu3() {
 }
 
 function update() {
-	set -e
 	echo
 	pmu
 	echo
