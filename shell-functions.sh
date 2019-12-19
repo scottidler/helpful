@@ -63,6 +63,14 @@ function mine() {
 	sudo chown -R $USER:$USER "$@"
 }
 
+function yours() {
+    sudo chown -R root:root "$@"
+}
+
+function ours() {
+    sudo chmod -R 777 "$@"
+}
+
 function mkfiles() {
 	NUM="$1"
 	DIR="${2:-.}"
