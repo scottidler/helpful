@@ -25,6 +25,24 @@ function vim() {
 	esac
 }
 
+function vim-which() {
+    ARGS=("$@")
+    WHICHD=""
+    for ARG in "${ARGS[@]}"; do
+        WHICHD="$WHICHD $(which $ARG)"
+    done
+    vim "$WHICHD"
+}
+
+function cat-which() {
+    ARGS=("$@")
+    WHICHD=""
+    for ARG in "${ARGS[@]}"; do
+        WHICHD="$WHICHD $(which $ARG)"
+    done
+    cat "$WHICHD"
+}
+
 function vim755() {
     vim "$@"
     chmod 755 "$@"
