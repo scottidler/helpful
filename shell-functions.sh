@@ -40,7 +40,7 @@ function cat-which() {
     for ARG in "${ARGS[@]}"; do
         WHICHD="$WHICHD $(which $ARG)"
     done
-    cat "$WHICHD"
+    ccat "$WHICHD"
 }
 
 function vim755() {
