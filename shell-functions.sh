@@ -218,7 +218,7 @@ function upsearch() {
     return
 }
 
-DOIT="`sudo which doit`"
+DOIT="`PATH=/usr/bin:/usr/local/bin:$HOME/.local/bin sudo which doit`"
 function doit() {
     if [[ "$1" =~ ^(auto|clean|dumpdb|forget|help|ignore|info|list|reset-dep|run|strace|tabcompletion)$ ]]; then
         CMD=( $DOIT $@ )
