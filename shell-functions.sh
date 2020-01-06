@@ -5,9 +5,9 @@ if [ -n "$DEBUG" ]; then
     set -x
 fi
 
+VIM="`print -r -- =vim`"
 function vim() {
 	ARGS=("$@")
-	VIM=/usr/bin/vim
 
 	VIM_MIN="${VIM_MIN:-2}"
 	VIM_MAX="${VIM_MAX:-3}"
@@ -218,7 +218,7 @@ function upsearch() {
     return
 }
 
-DOIT="`sudo PATH=/usr/bin:/usr/local/bin:$HOME/.local/bin which doit`"
+DOIT="`print -r -- =doit`"
 function doit() {
     if [[ "$1" =~ ^(auto|clean|dumpdb|forget|help|ignore|info|list|reset-dep|run|strace|tabcompletion)$ ]]; then
         CMD=( $DOIT $@ )
