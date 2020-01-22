@@ -218,8 +218,8 @@ function upsearch() {
     return
 }
 
-DOIT="`print -r -- =doit`"
 function doit() {
+    DOIT="$(print -r -- =doit)"
     if [[ "$1" =~ ^(auto|clean|dumpdb|forget|help|ignore|info|list|reset-dep|run|strace|tabcompletion)$ ]]; then
         CMD=( $DOIT $@ )
     else
