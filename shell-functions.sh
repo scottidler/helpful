@@ -26,21 +26,19 @@ function vim() {
 }
 
 function vim-which() {
-    ARGS=("$@")
-    WHICHD=""
-    for ARG in "${ARGS[@]}"; do
-        WHICHD="$WHICHD $(which $ARG)"
+    WHICHD=()
+    for ARG in "$@"; do
+        WHICHD+=("$(which $ARG)")
     done
     vim "$WHICHD"
 }
 
 function cat-which() {
-    ARGS=("$@")
-    WHICHD=""
-    for ARG in "${ARGS[@]}"; do
-        WHICHD="$WHICHD $(which $ARG)"
+    WHICHD=()
+    for ARG in "$@"; do
+        WHICHD+=("$(which $ARG)")
     done
-    ccat "$WHICHD"
+    ccat "${WHICHD[@]}"
 }
 
 function vim755() {
