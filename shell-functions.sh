@@ -64,6 +64,11 @@ function follow() {
     echo
 }
 
+function curl-follow() {
+    URL="$1"
+    curl -L -v -s -o /dev/null $URL 2>&1|grep -v 'Expire '|grep 'Location\|GET \|HTTP/'
+}
+
 function dbsl() {
     DIR="${1:-`pwd`}"
     RESULTS=`find -L $DIR -maxdepth 1 -type l`
