@@ -144,7 +144,7 @@ function pmu() {
 function pu() {
     if hash pipupgrade 2> /dev/null; then
         echo "updating pip3 packages..."
-        sudo pipupgrade -y
+        pipupgrade -y --pip-path /usr/local/bin/pip3
     fi
 }
 
