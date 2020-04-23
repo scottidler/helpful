@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+
+import os
+import re
+import sys
+sys.dont_write_bytecode = True
+
+from configparser import ConfigParser
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
+
+AWS_CONFIG = '~/.aws/config'
+
+def load_aws_config(filepath):
+    parser = ConfigParser()
+    parser.read(os.path.expanduser(filepath))
+    cfg = {}
+    for section in parser.sections():
+        if section.startswith ('profile '):
+            cfg[section[len('profile '):]] = parser[section].get('role_arn')
+    return cfg
+
+def main(args=None):
+    parser = ArgumentParser(
+        description=__doc__,
+        formatter_class=RawDescriptionHelpFormatter,
+        add_help=False)
+    parser.add_argument(
+        '-A', '--aws-config',
+        metavar='FILEPATH',
+        default=AWS_CONFIG,
+        help='default="%(default)s"; config filepath')
+    ns, rem = parser.parse_known_args(args)
+    cfg = load_aws_config(ns.aws_config)
+    parser = ArgumentParser(
+        parents=[parser])
+    parser.add_argument(
+        'profile',
+        choices=cfg.keys(),
+        help='choose a profile to look up its role arn')
+    ns = parser.parse_args(rem)
+    print(cfg[ns.profile])
+
+if __name__ == '__main__':
+    main(sys.argv[1:])
+
