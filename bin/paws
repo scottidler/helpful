@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import os
-import re
 import sys
 import json
 import requests
@@ -9,8 +8,6 @@ sys.dont_write_bytecode = True
 
 from configparser import ConfigParser
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
-
-from leatherman.dbg import dbg
 
 class DownloadAccountsJsonError(Exception):
     def __init__(self, result):
