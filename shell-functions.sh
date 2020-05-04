@@ -148,6 +148,13 @@ function pu() {
     fi
 }
 
+function pu2() {
+    sudo -H python3 -m pip list --outdated --format=freeze \
+        | \grep --color=auto -v '^\-3' \
+        | cut -d= -f1 \
+        | xargs -n1 sudo -H python3 -m pip install -U
+}
+
 function update() {
     echo
     pmu
