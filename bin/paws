@@ -59,7 +59,7 @@ def main(args=None):
         help='default="%(default)s"; select role suffix')
     parser.add_argument(
         'profile',
-        choices=cfg.keys(),
+        choices=sorted(cfg.keys()),
         help='choose a profile to look up its role arn')
     ns = parser.parse_args(rem)
     account = cfg[ns.profile]
