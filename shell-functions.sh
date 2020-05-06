@@ -159,7 +159,7 @@ function update() {
     echo
     pmu
     echo
-    pu
+    pu2
 }
 
 function reboot() {
