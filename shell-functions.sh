@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/zsh
 
 if [ -n "$DEBUG" ]; then
     PS4=':${LINENO}+'
@@ -90,6 +90,16 @@ function yours() {
 
 function ours() {
     sudo chmod -R 777 "$@"
+}
+
+function every() {
+    INTERVAL="$1"; shift
+    COMMAND="$@"
+    while true; do
+        echo "$(date) $COMMAND"
+        eval "$COMMAND"
+        sleep $INTERVAL
+    done
 }
 
 function mkfiles() {
