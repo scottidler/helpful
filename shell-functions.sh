@@ -66,7 +66,7 @@ function follow() {
 
 function curl-follow() {
     URL="$1"
-    curl -L -v -s -o /dev/null $URL 2>&1|grep -v 'Expire '|grep 'Location\|GET \|HTTP/'
+    curl $URL g -k -L -s -o /dev/null -v 2>&1|grep -e '^< HTTP' -e 'ocation:'
 }
 
 function dbsl() {
