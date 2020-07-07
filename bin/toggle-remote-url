@@ -41,10 +41,13 @@ def replace(pr, **kwargs):
 
 def toggle(url):
     pr = urlparse(url)
+    suffix = 'home'
     if pr.scheme == 'ssh':
         return replace(pr, scheme='https', netloc='github.com').geturl()
     elif pr.scheme == 'https':
-        return replace(pr, scheme='ssh', netloc='git@github.com').geturl()
+        if 'mozilla' in pr.path:
+            suffix = 'work'
+        return replace(pr, scheme='ssh', netloc=f'git@github.com-{suffix}').geturl()
 
 repo_root = call('git rev-parse --show-toplevel', throw=False)[1].strip()
 if repo_root:
