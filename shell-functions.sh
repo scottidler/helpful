@@ -76,8 +76,7 @@ function follow() {
 }
 
 function curl-follow() {
-    URL="$1"
-    curl $URL g -k -L -s -o /dev/null -v 2>&1|grep -e '^< HTTP' -e '[L|l]ocation:'
+    curl "$1" g -k -L -s -o /dev/null -v 2>&1|grep -e '^< HTTP' -e '[L|l]ocation:'
 }
 
 function dbsl() {
