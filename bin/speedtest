@@ -9,8 +9,13 @@ if ! hash jq; then
     exit 1
 fi
 
-LOG=/var/log/speedtest/log
-LAST=/var/log/speedtest/last
+SPEEDTEST_DIR=/var/log/speedtest
+
+sudo mkdir -p $SPEEDTEST_DIR
+sudo chown -R $USER:$USER $SPEEDTEST_DIR
+
+LOG="$SPEEDTEST_DIR/log"
+LAST="$SPEEDTEST_DIR/last"
 
 if [[ ! -f "$LOG" ]] || [[ ! -s "$LOG" ]]; then
     echo "[]" > "$LOG"

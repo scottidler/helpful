@@ -188,17 +188,17 @@ function reboot() {
     sudo systemctl reboot
 }
 
-function nightly() {
-    URLS=""
-    for ARG in "$@"; do
-        if [ -f "$ARG" ]; then
-            URLS+="$(cat "$ARG" | xargs echo -n) "
-        else
-            URLS+="$ARG "
-        fi
-    done
-    firefox-trunk -private "$URLS"
-}
+#function nightly() {
+#    URLS=""
+#    for ARG in "$@"; do
+#        if [ -f "$ARG" ]; then
+#            URLS+="$(cat "$ARG" | xargs echo -n) "
+#        else
+#            URLS+="$ARG "
+#        fi
+#    done
+#    firefox-trunk -private "$URLS"
+#}
 
 function replace() {
     FIND="$1"
