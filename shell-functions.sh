@@ -5,7 +5,7 @@ if [ -n "$DEBUG" ]; then
     set -x
 fi
 
-VIM="`print -r -- =vim`"
+VIM=$(print -r -- =vim)
 function vim() {
     ARGS=("$@")
 
@@ -169,6 +169,7 @@ function pu() {
 }
 
 function pu2() {
+    sudo -H python3 -m pip install -U pip
     sudo -H python3 -m pip list --outdated --format=freeze \
         | \grep --color=auto -v '^\-3' \
         | cut -d= -f1 \
