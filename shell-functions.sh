@@ -75,10 +75,6 @@ function follow() {
     echo
 }
 
-function curl-follow() {
-    curl "$1" g -k -L -s -o /dev/null -v 2>&1|grep -e '^< HTTP' -e '[L|l]ocation:'
-}
-
 function dbsl() {
     DIR="${1:-`pwd`}"
     RESULTS=`find -L $DIR -maxdepth 1 -type l`
@@ -189,18 +185,6 @@ function reboot() {
     sudo systemctl reboot
 }
 
-#function nightly() {
-#    URLS=""
-#    for ARG in "$@"; do
-#        if [ -f "$ARG" ]; then
-#            URLS+="$(cat "$ARG" | xargs echo -n) "
-#        else
-#            URLS+="$ARG "
-#        fi
-#    done
-#    firefox-trunk -private "$URLS"
-#}
-
 function replace() {
     FIND="$1"
     REPL="$2"
@@ -223,15 +207,6 @@ function ovpn() {
         echo "$CMD"
         eval "$CMD"
     done
-}
-
-function sls() {
-    SLS="$(which serverless)"
-    LOCAL="./node_modules/serverless/bin/serverless"
-    if [ -f "$LOCAL" ]; then
-        SLS="$LOCAL"
-    fi
-    "$SLS" "$@"
 }
 
 function upsearch() {
@@ -266,27 +241,10 @@ function toplevel() {
     [ -d "$1" ] && echo "$1" || echo "$(dirname "$1")"
 }
 
-function mv-cd() {
-    mv "$1" "$2" && cd "$(toplevel "$2")"
-}
-
 function mv-replace() {
     FILE=$1
     REPL=${2:-'-'}
     mv $FILE ${FILE// /$REPL}
-}
-
-function cp-cd() {
-    cp "$1" "$2" && cd "$(toplevel "$2")"
-}
-
-function jira() {
-    WORKITEM="$1"
-    echo "https://jira.mozilla.com/browse/$WORKITEM:u"
-}
-
-function mkdir-cd() {
-    mkdir "$1" && cd "$1"
 }
 
 function delete-branch() {
