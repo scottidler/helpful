@@ -36,13 +36,13 @@ function ls-ppas() {
     done
 }
 
-function vim-which() {
-    WHICHD=()
-    for ARG in "$@"; do
-        WHICHD+=("$(which $ARG)")
-    done
-    vim "$WHICHD"
-}
+#function vim-which() {
+#    WHICHD=()
+#    for ARG in "$@"; do
+#        WHICHD+=("$(which $ARG)")
+#    done
+#    vim "$WHICHD"
+#}
 
 function cat-which() {
     WHICHD=()
