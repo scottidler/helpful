@@ -137,12 +137,12 @@ function pu() {
 }
 
 function pu2() {
-    sudo -H python3 -m pip install -U pip
+    sudo -H python3 -m pip install --root-user-action=ignore -U pip
     sudo -H python3 -m pip list --outdated --format=freeze \
         | \grep --color=auto -v '^\-3' \
         | cut -d= -f1 \
         | grep -vxFf ~/.distutils.pkgs \
-        | xargs -n1 sudo -H python3 -m pip install -U
+        | xargs -n1 sudo -H python3 -m pip install --root-user-action=ignore -U
 }
 
 function update() {
