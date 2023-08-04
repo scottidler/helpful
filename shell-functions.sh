@@ -5,7 +5,17 @@ if [ -n "$DEBUG" ]; then
     set -x
 fi
 
-VIM=$(print -r -- =vim)
+function set_vim_var() {
+    local cmd=$1
+    echo $(command -v $cmd)
+}
+
+if hash nvim >/dev/null; then
+    VIM=$(set_vim_var nvim)
+else
+    VIM=$(set_vim_var vim)
+fi
+
 function vim() {
     ARGS=("$@")
 
