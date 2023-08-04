@@ -5,15 +5,10 @@ if [ -n "$DEBUG" ]; then
     set -x
 fi
 
-function set_vim_var() {
-    local cmd=$1
-    echo $(command -v $cmd)
-}
-
 if hash nvim >/dev/null; then
-    VIM=$(set_vim_var nvim)
+    VIM=$(command -v nvim)
 else
-    VIM=$(set_vim_var vim)
+    VIM=$(command -v vim)
 fi
 
 function vim() {
