@@ -171,7 +171,7 @@ function replace() {
         echo "replace FIND [REPL] [DIR]"
         return 1
     fi
-    find "$DIR" -path ./.git -prune -o -type f -exec sed -i "s/$FIND/$REPL/g" {} \;
+    find "$DIR" -path ./.git -prune -o -type f -exec sed -i "s|$FIND|$REPL|g" {} \;
 }
 
 function ovpn() {
@@ -232,4 +232,26 @@ function delete-branch() {
         git branch -D "$branch"
     done
     git prune
+}
+
+function capture() {
+    # Set the necessary environment variables
+    export COLUMNS=$(tput cols)
+    export STARSHIP_CMD_STATUS=0
+    export STARSHIP_PIPE_STATUS=(0)
+    export STARSHIP_DURATION=""
+    export STARSHIP_JOBS_COUNT=0
+
+    # Capture the prompt
+    THE_PROMPT=$(print -P "$PS1" | sed 's/\x1b\[[0-9;]*m//g')
+
+    # Store the command and its arguments in an array
+    CMD=("bat" "-p" "$1")
+
+    # Concatenate everything and copy to clipboard
+    {
+        echo "$THE_PROMPT"
+        echo "${CMD[@]}"
+        "${CMD[@]}"
+    } | xclip -selection clipboard
 }
