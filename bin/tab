@@ -1,19 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ -n "$DEBUG" ]; then
-    PS4=':${LINENO}+'
-    set -x
+	PS4=':${LINENO}+'
+	set -x
 fi
 
-REAL_FILE="$0"
-REAL_NAME="$(basename "$REAL_FILE")"
-REAL_PATH="$(dirname "$REAL_FILE")"
-if [ -L "$0" ]; then
-    LINK_FILE=$REAL_FILE; REAL_FILE="$(readlink "$0")"
-    LINK_NAME=$REAL_NAME; REAL_NAME="$(basename "$REAL_FILE")"
-    LINK_PATH=$REAL_PATH; REAL_PATH="$(dirname "$REAL_FILE")"
-fi
+FILE="$0"
+NAME="$(basename "$FILE")"
 
-NUM="${LINK_NAME:3}"
+NUM=$(echo "$NAME" | sed -n 's/^tab\([0-9]\+\)$/\1/p')
+if [[ -z "$NUM" ]]; then
+	NUM=2
+fi
 PAD="$(printf "%${NUM}s")"
 sed "s/^/${PAD:-\t}/" <($*)
