@@ -1,4 +1,4 @@
-#!/usr/bin/zsh
+#!/usr/bin/env zsh
 
 if [ -n "$DEBUG" ]; then
     PS4=':${LINENO}+'

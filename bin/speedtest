@@ -1,12 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 if ! hash speedtest-cli; then
-    echo "speedtest-cli not installed or in PATH"
-    exit 1
+  echo "speedtest-cli not installed or in PATH"
+  exit 1
 fi
 
 if ! hash jq; then
-    echo "jq not installed or in PATH"
-    exit 1
+  echo "jq not installed or in PATH"
+  exit 1
 fi
 
 SPEEDTEST_DIR=/var/log/speedtest
@@ -18,7 +18,7 @@ LOG="$SPEEDTEST_DIR/log"
 LAST="$SPEEDTEST_DIR/last"
 
 if [[ ! -f "$LOG" ]] || [[ ! -s "$LOG" ]]; then
-    echo "[]" > "$LOG"
+  echo "[]" >"$LOG"
 fi
 
 read -r -d '' FILTER <<'EOF'
@@ -33,18 +33,19 @@ read -r -d '' FILTER <<'EOF'
 EOF
 
 print() {
-    echo "$1:"
-    [[ -f "$LAST" ]] && jq '.' "$LAST"
+  echo "$1:"
+  [[ -f "$LAST" ]] && jq '.' "$LAST"
 }
 
 # print the last value
 print last
 
 # run speedtest-cli store in last
-speedtest-cli --json | jq "${FILTER//[[:space:]]/}" > "$LAST"
+speedtest-cli --json | jq "${FILTER//[[:space:]]/}" >"$LAST"
 
 # print the last value (just calculated)
 print now
 
 # append last data to running log
-jq -s '.[0] + [.[1]]' "$LOG" "$LAST" > "$LOG.new"; mv "$LOG.new" "$LOG"
+jq -s '.[0] + [.[1]]' "$LOG" "$LAST" >"$LOG.new"
+mv "$LOG.new" "$LOG"

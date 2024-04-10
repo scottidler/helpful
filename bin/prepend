@@ -1,27 +1,30 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 if [ -n "$DEBUG" ]; then
-    PS4=':${LINENO}+'
-    set -x
+	PS4=':${LINENO}+'
+	set -x
 fi
 
 REAL_FILE="$0"
 REAL_NAME="$(basename "$REAL_FILE")"
 REAL_PATH="$(dirname "$REAL_FILE")"
 if [ -L "$0" ]; then
-    LINK_FILE=$REAL_FILE; REAL_FILE="$(readlink "$0")"
-    LINK_NAME=$REAL_NAME; REAL_NAME="$(basename "$REAL_FILE")"
-    LINK_PATH=$REAL_PATH; REAL_PATH="$(dirname "$REAL_FILE")"
+	LINK_FILE=$REAL_FILE
+	REAL_FILE="$(readlink "$0")"
+	LINK_NAME=$REAL_NAME
+	REAL_NAME="$(basename "$REAL_FILE")"
+	LINK_PATH=$REAL_PATH
+	REAL_PATH="$(dirname "$REAL_FILE")"
 fi
 if [ -n "$VERBOSE" ]; then
-    echo "REAL_FILE=$REAL_FILE"
-    echo "REAL_NAME=$REAL_NAME"
-    echo "REAL_PATH=$REAL_PATH"
-    if [ -L "$0" ]; then
-        echo "LINK_FILE=$LINK_FILE"
-        echo "LINK_NAME=$LINK_NAME"
-        echo "LINK_PATH=$LINK_PATH"
-    fi
+	echo "REAL_FILE=$REAL_FILE"
+	echo "REAL_NAME=$REAL_NAME"
+	echo "REAL_PATH=$REAL_PATH"
+	if [ -L "$0" ]; then
+		echo "LINK_FILE=$LINK_FILE"
+		echo "LINK_NAME=$LINK_NAME"
+		echo "LINK_PATH=$LINK_PATH"
+	fi
 fi
 
 # split string based on delimiter in shell https://stackoverflow.com/a/15988793
@@ -31,27 +34,27 @@ fi
 # ${VAR%%SUB*} # will drop part of string from first occur of `SUB` to the end
 
 usage() {
-    echo "usage: prepend [-h] text file"
+	echo "usage: prepend [-h] text file"
 }
 
 # check if user supplied --help|-h and display usage if so
-if [[ ( $# == "--help") || $# == "-h" ]]; then
-    usage
-    exit 0
+if [[ ($# == "--help") || $# == "-h" ]]; then
+	usage
+	exit 0
 fi
 
 # check if user supplied less that two arguments; text and file
 if [ $# -le 1 ]; then
-    usage
-    exit 1
+	usage
+	exit 1
 fi
 
 # check if run as root
 if [[ "$EUID" -eq 0 ]]; then
-    echo "this script should not be run as root!"
-    exit 1
+	echo "this script should not be run as root!"
+	exit 1
 fi
 
 TEXT="$1"
 FILE="$2"
-echo "$TEXT" | cat - "$FILE" > "/tmp/$(basename $FILE).tmp" && mv "/tmp/$(basename $FILE).tmp" "$FILE" && head "$FILE"
+echo "$TEXT" | cat - "$FILE" >"/tmp/$(basename $FILE).tmp" && mv "/tmp/$(basename $FILE).tmp" "$FILE" && head "$FILE"
