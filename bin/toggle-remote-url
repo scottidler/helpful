@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import sys
-
 from subprocess import Popen, CalledProcessError, PIPE
 from urllib.parse import urlparse, ParseResult
 
