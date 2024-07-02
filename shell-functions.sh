@@ -187,6 +187,30 @@ function ovpn() {
     done
 }
 
+function _spell_scrabble() {
+  local input="$@"
+  local scrabble_sentence=""
+  local char
+
+  for (( i=1; i<=${#input}; i++ )); do
+    char="${input[$i]}"
+    if [[ "$char" =~ [[:alpha:]] ]]; then
+      scrabble_sentence+=":scrabble-${char:l}:"
+    elif [[ "$char" == " " ]]; then
+      scrabble_sentence+=" "
+    fi
+  done
+
+  echo "$scrabble_sentence"
+}
+
+function scrabble() {
+  local words="$*"
+  local scrabble_sentence=$(_spell_scrabble "$words")
+  echo "$scrabble_sentence" | xclip -selection clipboard
+  echo "$scrabble_sentence"
+}
+
 function upsearch() {
     FILE="$1"
     DIR="$PWD"
