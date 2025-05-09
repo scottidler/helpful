@@ -279,3 +279,19 @@ function capture() {
         "${CMD[@]}"
     } | xclip -selection clipboard
 }
+
+function window() {
+    if [[ $# -ne 3 ]]; then
+        echo "Usage: $0 <filename> <window-size> <window-number>"
+        exit 1
+    fi
+
+    filename="$1"
+    window_size="$2"
+    window_number="$3"
+
+    start=$(( (window_number - 1) * window_size + 1 ))
+    end=$(( start + window_size - 1 ))
+
+    sed -n "${start},${end}p" "$filename"
+}
