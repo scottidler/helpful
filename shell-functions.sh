@@ -280,6 +280,71 @@ function capture() {
     } | xclip -selection clipboard
 }
 
+function remind() {
+    if [[ $# -lt 2 ]]; then
+        echo "usage: remind <when> <message>"
+        echo "  remind 30m 'take a break'        # delay: sleep-based"
+        echo "  remind 2h 'standup prep'          # delay: sleep-based"
+        echo "  remind 8:45am 'morning meeting'   # at-time: uses at(1)"
+        echo "  remind tomorrow 'do the thing'    # at-time: uses at(1)"
+        echo "  remind '8:45am Mar 2' 'phase 3'   # at-time: uses at(1)"
+        return 1
+    fi
+    local when="$1"; shift
+    local msg="$*"
+    if [[ "$when" =~ ^[0-9]+[smhd]$ ]]; then
+        (sleep "$when" && notify-send -u critical "Reminder" "$msg") &
+        disown
+        echo "reminder set: '$msg' in $when (pid $!)"
+    else
+        echo "DISPLAY=$DISPLAY notify-send -u critical 'Reminder' '$msg'" | at "$when"
+    fi
+}
+
+function _in_llm_session() {
+    # Signal 1: Claude Code sets CLAUDECODE=1 in every Bash tool invocation
+    [[ "${CLAUDECODE:-}" == "1" ]] && return 0
+    # Signal 2: parent process binary is claude or gemini
+    local cmdline
+    cmdline=$(tr '\0' ' ' < /proc/$PPID/cmdline 2>/dev/null)
+    [[ "$cmdline" =~ ^(claude|gemini) ]] && return 0
+    return 1
+}
+
+function env() {
+    # Consume -r/--redact before passing remaining args to real env
+    local redact=0
+    local -a rest=()
+    for arg in "$@"; do
+        if [[ "$arg" == "-r" || "$arg" == "--redact" ]]; then
+            redact=1
+        else
+            rest+=("$arg")
+        fi
+    done
+
+    # Pass-through: env is being used to run a command (has a non-flag, non-assignment arg)
+    if (( !redact )); then
+        for arg in "${rest[@]}"; do
+            [[ "$arg" == -* || "$arg" == *=* ]] && continue
+            command env "${rest[@]}"
+            return
+        done
+    fi
+
+    # Listing mode: redact when forced (-r/--redact) or inside an LLM session.
+    # Inline the detection rather than calling _in_llm_session: shell snapshots
+    # used by Claude Code skip single-underscore functions, so the helper would
+    # be undefined and the || would silently fall through to command env.
+    local cmdline
+    cmdline=$(tr '\0' ' ' < /proc/$PPID/cmdline 2>/dev/null)
+    if (( redact )) || [[ "${CLAUDECODE:-}" == "1" ]] || [[ "$cmdline" =~ (^claude|gemini) ]]; then
+        /home/saidler/bin/env.sh
+    else
+        command env "${rest[@]}"
+    fi
+}
+
 function window() {
     if [[ $# -ne 3 ]]; then
         echo "Usage: $0 <filename> <window-size> <window-number>"
