@@ -40,8 +40,14 @@ print() {
 # print the last value
 print last
 
-# run speedtest-cli store in last
-speedtest-cli --json | jq "${FILTER//[[:space:]]/}" >"$LAST"
+# run speedtest-cli store in last; a failed run must not truncate last or append null
+set -o pipefail
+if ! speedtest-cli --json | jq -e "${FILTER//[[:space:]]/}" >"$LAST.new" || [[ ! -s "$LAST.new" ]]; then
+  echo "speedtest-cli failed; not recording" >&2
+  rm -f "$LAST.new"
+  exit 1
+fi
+mv "$LAST.new" "$LAST"
 
 # print the last value (just calculated)
 print now
